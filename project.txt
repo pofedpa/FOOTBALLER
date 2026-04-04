@@ -328,3 +328,24 @@ int main() {
         cout<<endl;
     } while(d != 7);
 }
+
+
+
+
+File:
+1.Ronaldo.Cristiano.Santos.Al-Nassr.Forward.50.1000.Portugal.955385
+2.Messi.Lionel.Andres.Inter Miami.Attacking Midfielder.37.900.Argentina.1324567
+3.Neymar.da Silva Santos Junior.Al-Hilal.Forward.33.398.Brazil.4567
+4.Mbappe.Kylian.Sanmi.Real Madrid.Forward.26.312.France.897231
+5.Haaland.Erling.Braut.Manchester City.Forward.24.301.Norway.456132
+7.Salah.Mohamed.Hamed.Liverpool.Forward.32.367.Egypt.162874
+8.Lewandowski.Robert.Andrzej.Barcelona.Forward.36.421.Poland.247469
+10.Modric.Luka.Petar.Real Madrid.Midfielder.39.378.Croatia.147612
+11.van Dijk.Virgil.Arnold.Liverpool.Defender.33.312.Netherlands.345787
+12.Kante.Ngolo.Lali.Al-Ittihad.Midfielder.33.304.France.124356
+13.Akinfeev.Igor.Vladimirovich.CSKA Moscow.Goalkeeper.38.312.Russia.999056
+14.Dzyuba.Artem.Sergeevich.Akron.Forward.36.347.Russia.926777
+15.Vinicius.Junior.Paula.Real Madrid.Forward.24.313.Brazil.34562
+16.Pedri.Gonzalez.Lopez.Barcelona.Midfielder.22.307.Spain.12678
+17.Yamal.Lamine.Nasraoui.Barcelona.Forward.17.302.Spain.23567
+
