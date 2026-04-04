@@ -1,0 +1,330 @@
+#include <iostream>
+#include <fstream>
+#include <string>
+using namespace std;
+void showMem() {
+    cout<<"1.Просмотреть всех"<<endl;
+    cout<<"2.Добавить нового"<<endl;
+    cout<<"3.Поиск по...."<<endl;
+    cout<<"4.Редактировать"<<endl;
+    cout<<"5.Удалить отдельного игрока"<<endl;
+    cout<<"6.Очистить всю картотеку"<<endl;
+    cout<<"7.Выход"<<endl;
+    cout<<"Выберите:";
+}
+int main() {
+    ifstream f1;
+    ofstream f2;
+    string s = "footballers.txt";
+    string p = "Foot.txt";
+    system("chcp 65001");
+    string g;
+    int d ;
+    int n = 9,ert;
+    string y[n]= {"номер футболиста в картотеке","Фамилия","Имя","Отчество","Клуб","Позиция","Возраст","Голы","Страна"};
+    do {
+        showMem();
+        cin>>d;
+        cout<<endl;
+        switch(d) {
+            case 1:
+                f1.open(s);
+                if(!f1.is_open()) {cout<<"error opening file"<<endl;}
+                else {
+                    string g;
+                    while (getline(f1,g)) {
+                        cout<<g;
+                        cout<<endl;
+                    }
+                    f1.close();
+                }
+                break;
+            case 2:
+                f2.open(s,ios::app);
+                if(!f2.is_open()) {cout<<"error opening file"<<endl;}
+                else {
+                    int netu_nichego = 1;
+                    f1.open(s);
+                    string line, l;
+                    if (f1.is_open()) {
+                        while (getline(f1, line)) {
+                            if (!line.empty()) l = line;
+                        }
+                    }
+                    int d = l.find('.');
+                    string k = l.substr(0, d);
+                    netu_nichego = stoi(k)+1;
+                    cout<<y[0]<<":"<<netu_nichego<<endl;
+                    f2<<netu_nichego<<'.';
+                    string h;
+                    cin.ignore();
+                    for (int i = 1;i<n;i++) {
+                        cout<<y[i]<<":";
+                        getline(cin,h);
+                        if (h.empty() && i == n-1) continue;
+                        if (!h.empty()&&i!=n-1) f2<<h<<".";
+                    }
+                    f2<<endl;
+                    ert++;
+                }
+                f2.close();
+                break;
+            case 3: {
+                cout<<"по какой части хотите поиск или 0 если по нескольким(так точнее):";
+                cout<<endl;
+                for (int i = 1;i<n;i++) {
+                    cout<<i<<":"<<y[i];
+                    cout<<endl;
+
+                }
+                int f;
+                string s;
+                cout<<"Выбор:";
+                cout<<endl;
+                cin>>f;
+                string j = "Ball.txt";
+                if (f == 0) {
+                    int index[4] = {1,2,3,8};
+                    string vpn[4] = {"Фамилию","Имя","Отчество","Страну"};
+                    string sort[4];
+                    cin.ignore();
+                    for (int i = 0; i < 4; i++) {
+                        cout<<"Введите "<<vpn[i]<<":";
+                        getline(cin, sort[i]);
+                    }
+                    string out;
+                    for (int i = 0; i < 4; i++) {
+                        if (i % 2 == 0) out = p;
+                        else out = j;
+
+                        ifstream f67(s);
+                        ofstream f66(out, ios::trunc);
+                        if (!f67.is_open() || !f66.is_open()) {
+                            cout<<"error"<<endl;
+                            break;
+                        }
+
+                        string line;
+                        int find = 0;
+                        while (getline(f67, line)) {
+                            string h[n];
+                            int st = 0;
+                            int e= line.find('.');
+                            int d = 0;
+                            for(int i = 0; i < n; i++) {
+                                h[i] = line.substr(st,e-st);
+                                st = e+1;
+                                e = line.find('.',st);
+                            }
+                            if (h[index[i]] == sort[i]) {
+                                f66<<line<<endl;
+                                find++;
+                            }
+                        }
+                        f67.close();
+                        f66.close();
+
+                        if (find == 0) {
+                            cout<<"Ничего не найденно";
+                            ofstream(p, ios::trunc).close();
+                            ofstream(j, ios::trunc).close();
+                            break;
+                        }
+                        s = out;
+                    }
+                    ifstream r(j);
+                    if (r.is_open()) {
+                        string line;
+                        int number = 1;
+                        while (getline(r, line)) {
+                            cout<<number<<":"<<line<<endl;
+                            number++;
+                        }
+                        r.close();
+                    }
+                }
+                if (f>=1 && f<=8){
+                    cout<<y[f]<<":"<<endl;
+                    cin.ignore();
+                    getline(cin,s);
+                    f1.open(s);
+                    if (!f1.is_open()) {
+                        cout<<"error"<< endl;
+                        break;
+                    }
+                    else {
+                        string line;
+                        bool find = false;
+                        int l = 0;
+                        while (getline(f1, line)) {
+                            l++;
+                            string h[n];
+                            int st = 0;
+                            int e= line.find('.');
+                            int d = 0;
+                            for(int i = 0; i < n; i++) {
+                                h[i] = line.substr(st,e-st);
+                                st = e+1;
+                                e = line.find('.',st);
+                            }
+                            if (h[f].find(s) != string::npos) {
+                                cout<<"Найдено под номером"<<l<<":"<<line;
+                                find = true;
+                            }
+                        }
+                        f1.close();
+                        if (!find) cout<<"Ничего не найденно проверьте правильность ввода и попробуйте ещё раз:"<<s;
+                    }
+                }
+                break;
+            }
+            case 4: {
+                string f;
+                int o;
+                cout<<"Введите номер игрока для изменения: ";
+                cin.ignore();
+                getline(cin, f);
+                f1.open(s);
+                f2.open(p, ios::out);
+                string h[n];
+                string line;
+                int st = 0;
+                int e = line.find('.');
+                if(!f1.is_open()||!f2.is_open()) {
+                    cout<<"error opening file"<<endl;
+                }
+                else {
+                    while(getline(f1, line)) {
+                        int d = line.find('.');
+                            string c = line.substr(0, d);
+                            if(c == f) {
+                                cout<<line<<endl;
+                                cout<<"что хотите изменить,или 0 если всё :";
+                                cout<<endl;
+                                for (int i = 1;i<n;i++) {
+                                    cout<<i<<":"<<y[i];
+                                    cout<<endl;
+                                }
+                                cout<<"Выбор:"<<endl;
+                                cin>>o;
+                                cin.ignore();
+                                int st = 0;
+                                int e = line.find('.');
+                                for(int i = 0; i < n; i++) {
+                                    h[i] = line.substr(st,e - st);
+                                    st = e + 1;
+                                    e = line.find('.', st);
+                                }
+
+                                if (o==0) {
+                                    for(int i = 1; i < n; i++) {
+                                        cout<<y[i];
+                                        string net;
+                                        getline(cin, net);
+                                        if (!net.empty()) h[i] = net;
+                                        if (net.empty()) continue;
+                                    }
+                                }
+                                else if(o >= 1 && o <= 8) {
+                                    cout<<y[o]<<":";
+                                    string net;
+                                    cout<<endl;
+                                    getline(cin, net);
+                                    if (!net.empty()) h[o] = net;
+                                    if (net.empty()) continue;
+                                }
+                                string netu;
+                                for(int i = 0; i < n; i++) {
+                                    netu += h[i];
+                                    if(i < n-1) netu += ".";
+                                }
+                                f2<<netu<<endl;
+                            }
+                            else if (c!=f) f2<<line<<endl;
+                    }
+                    f2.close();
+                    f1.close();
+                }
+                ofstream f9(s, ios::trunc);
+                f9.close();
+                f2.open(s);
+                f1.open(p);
+                if(!f2.is_open()) {cout<<"error opening file"<<endl;}
+                else {
+                    string g;
+                    while (getline(f1,g)) {
+                        f2<<g;
+                        f2<<endl;
+                    }
+                    f2.close();
+                }
+                f1.close();
+                ofstream f67(p, ios::trunc);
+                f67.close();
+                break;
+            }
+            case 5: {
+                string n;
+                cout<<"Введите номер игрока для удаления: ";
+                cin.ignore();
+                getline(cin, n);
+                f1.open(s);
+                f2.open(p, ios::out);
+                if(!f1.is_open()||!f2.is_open()) {
+                    cout<<"error opening file"<<endl;
+                }
+                else {
+                    string line;
+                    while(getline(f1, line)) {
+                        int d = line.find('.');
+                            string c = line.substr(0, d);
+                            if(c == n) {
+                                continue;
+                            }
+
+                        f2<<line<<endl;
+                    }
+                    f2.close();
+                    f1.close();
+                }
+                ofstream f(s, ios::trunc);
+                f.close();
+                f2.open(s);
+                f1.open(p);
+                if(!f2.is_open()) {cout<<"error opening file"<<endl;}
+                else {
+                    string g;
+                    while (getline(f1,g)) {
+                        f2<<g;
+                        f2<<endl;
+                    }
+                    f2.close();
+                }
+                f1.close();
+                ofstream f67(p, ios::trunc);
+                f67.close();
+                break;
+            }
+            case 6: {
+                string m;
+                cout<<"правда :y/n"<<endl;
+                cin.ignore();
+                getline(cin, m);
+                if (m=="yes" || m=="y") {
+                    ofstream f(s, ios::trunc);
+                    f.close();
+                }
+                if (m=="no" || m=="n") {
+                    break;
+                }
+                break;
+            };
+            case 7:
+                return 0;
+
+            default:
+                cout<<"!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!";
+        }
+        cout<<endl;
+    } while(d != 7);
+}
