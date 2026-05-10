@@ -83,66 +83,6 @@ int main() {
                 cout<<endl;
                 cin>>f;
                 string j = "Ball.txt";
-                if (f == 0) {
-                    int index[4] = {1,2,3,8};
-                    string vpn[4] = {"Фамилию","Имя","Отчество","Страну"};
-                    string sort[4];
-                    cin.ignore();
-                    for (int i = 0; i < 4; i++) {
-                        cout<<"Введите "<<vpn[i]<<":";
-                        getline(cin, sort[i]);
-                    }
-                    string out;
-                    for (int i = 0; i < 4; i++) {
-                        if (i % 2 == 0) out = p;
-                        else out = j;
-
-                        ifstream f67(s);
-                        ofstream f66(out, ios::trunc);
-                        if (!f67.is_open() || !f66.is_open()) {
-                            cout<<"error"<<endl;
-                            break;
-                        }
-
-                        string line;
-                        int find = 0;
-                        while (getline(f67, line)) {
-                            string h[n];
-                            int st = 0;
-                            int e= line.find('.');
-                            int d = 0;
-                            for(int i = 0; i < n; i++) {
-                                h[i] = line.substr(st,e-st);
-                                st = e+1;
-                                e = line.find('.',st);
-                            }
-                            if (h[index[i]] == sort[i]) {
-                                f66<<line<<endl;
-                                find++;
-                            }
-                        }
-                        f67.close();
-                        f66.close();
-
-                        if (find == 0) {
-                            cout<<"Ничего не найденно";
-                            ofstream(p, ios::trunc).close();
-                            ofstream(j, ios::trunc).close();
-                            break;
-                        }
-                        s = out;
-                    }
-                    ifstream r(j);
-                    if (r.is_open()) {
-                        string line;
-                        int number = 1;
-                        while (getline(r, line)) {
-                            cout<<number<<":"<<line<<endl;
-                            number++;
-                        }
-                        r.close();
-                    }
-                }
                 if (f>=1 && f<=8){
                     cout<<y[f]<<":"<<endl;
                     cin.ignore();
