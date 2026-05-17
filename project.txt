@@ -1,6 +1,7 @@
 #include <iostream>
 #include <fstream>
 #include <string>
+#include <vector>
 using namespace std;
 void showMem() {
     cout<<"1.Просмотреть всех"<<endl;
@@ -12,10 +13,35 @@ void showMem() {
     cout<<"7.Выход"<<endl;
     cout<<"Выберите:";
 }
+void razdelenie(string (&h)[],string& line ,int n) {
+    int st = 0;
+    int e = line.find('.');
+        for(int i = 0; i < n; i++) {
+            h[i] = line.substr(st,e-st);
+            st = e+1;
+            e = line.find('.',st);
+        }
+}
+void ydalit (string p,ifstream& f1,ofstream& f2) {
+    if (!f1.is_open() || !f2.is_open()) {cout<<"error opening file"<<endl;}
+    else {
+        string g;
+        while (getline(f1,g)) {
+            f2<<g;
+            f2<<endl;
+        }
+        f2.close();
+    }
+    f1.close();
+    ofstream f67(p, ios::trunc);
+    f67.close();
+}
+
+
 int main() {
     ifstream f1;
     ofstream f2;
-    string s = "footballers.txt";
+    string s = "footballers.txt.txt";
     string p = "Foot.txt";
     system("chcp 65001");
     string g;
@@ -61,7 +87,7 @@ int main() {
                     for (int i = 1;i<n;i++) {
                         cout<<y[i]<<":";
                         getline(cin,h);
-                        if (h.empty() && i == n-1) continue;
+                        if (i == n-1) continue;
                         if (!h.empty()&&i!=n-1) f2<<h<<".";
                     }
                     f2<<endl;
@@ -70,52 +96,51 @@ int main() {
                 f2.close();
                 break;
             case 3: {
-                cout<<"по какой части хотите поиск или 0 если по нескольким(так точнее):";
+                cout<<"по какой части хотите поиск:";
                 cout<<endl;
+                string po = "footballers.txt.txt";
                 for (int i = 1;i<n;i++) {
                     cout<<i<<":"<<y[i];
                     cout<<endl;
 
                 }
                 int f;
-                string s;
                 cout<<"Выбор:";
                 cout<<endl;
                 cin>>f;
-                string j = "Ball.txt";
-                if (f>=1 && f<=8){
+                if (f>=1 && f<=8) {
                     cout<<y[f]<<":"<<endl;
                     cin.ignore();
-                    getline(cin,s);
+                    string il;
+                    getline(cin,il);
+                    s="footballers.txt.txt";
                     f1.open(s);
                     if (!f1.is_open()) {
                         cout<<"error"<< endl;
                         break;
                     }
-                    else {
+                    else{
                         string line;
                         bool find = false;
                         int l = 0;
                         while (getline(f1, line)) {
                             l++;
                             string h[n];
-                            int st = 0;
-                            int e= line.find('.');
-                            int d = 0;
-                            for(int i = 0; i < n; i++) {
-                                h[i] = line.substr(st,e-st);
-                                st = e+1;
-                                e = line.find('.',st);
-                            }
-                            if (h[f].find(s) != string::npos) {
-                                cout<<"Найдено под номером"<<l<<":"<<line;
+                            razdelenie(h,line,n);
+                            if (h[f].find(il) != string::npos) {
+                                cout<<"Найдено под номером"<<" "<<l<<":"<<endl;
+                                for (int i = 1; i < n; i++) {
+                                    cout<<h[i]<<" ";
+                                }
                                 find = true;
                             }
                         }
                         f1.close();
-                        if (!find) cout<<"Ничего не найденно проверьте правильность ввода и попробуйте ещё раз:"<<s;
+                        if (!find) cout<<"Ничего не найденно проверьте правильность ввода и попробуйте ещё раз:"<<il;
                     }
                 }
+
+
                 break;
             }
             case 4: {
@@ -128,59 +153,50 @@ int main() {
                 f2.open(p, ios::out);
                 string h[n];
                 string line;
-                int st = 0;
-                int e = line.find('.');
                 if(!f1.is_open()||!f2.is_open()) {
                     cout<<"error opening file"<<endl;
                 }
                 else {
                     while(getline(f1, line)) {
                         int d = line.find('.');
-                            string c = line.substr(0, d);
-                            if(c == f) {
-                                cout<<line<<endl;
-                                cout<<"что хотите изменить,или 0 если всё :";
+                        string c = line.substr(0, d);
+                        if(c == f) {
+                            cout<<line<<endl;
+                            cout<<"что хотите изменить,или 0 если всё :";
+                            cout<<endl;
+                            for (int i = 1;i<n;i++) {
+                                cout<<i<<":"<<y[i];
                                 cout<<endl;
-                                for (int i = 1;i<n;i++) {
-                                    cout<<i<<":"<<y[i];
-                                    cout<<endl;
-                                }
-                                cout<<"Выбор:"<<endl;
-                                cin>>o;
-                                cin.ignore();
-                                int st = 0;
-                                int e = line.find('.');
-                                for(int i = 0; i < n; i++) {
-                                    h[i] = line.substr(st,e - st);
-                                    st = e + 1;
-                                    e = line.find('.', st);
-                                }
-
-                                if (o==0) {
-                                    for(int i = 1; i < n; i++) {
-                                        cout<<y[i];
-                                        string net;
-                                        getline(cin, net);
-                                        if (!net.empty()) h[i] = net;
-                                        if (net.empty()) continue;
-                                    }
-                                }
-                                else if(o >= 1 && o <= 8) {
-                                    cout<<y[o]<<":";
+                            }
+                            cout<<"Выбор:"<<endl;
+                            cin>>o;
+                            cin.ignore();
+                            razdelenie(h,line,n);
+                            if (o==0) {
+                                for(int i = 1; i < n; i++) {
+                                    cout<<y[i];
                                     string net;
-                                    cout<<endl;
                                     getline(cin, net);
-                                    if (!net.empty()) h[o] = net;
+                                    if (!net.empty()) h[i] = net;
                                     if (net.empty()) continue;
                                 }
-                                string netu;
-                                for(int i = 0; i < n; i++) {
-                                    netu += h[i];
-                                    if(i < n-1) netu += ".";
-                                }
-                                f2<<netu<<endl;
                             }
-                            else if (c!=f) f2<<line<<endl;
+                            else if(o >= 1 && o <= 8) {
+                                cout<<y[o]<<":";
+                                string net;
+                                cout<<endl;
+                                getline(cin, net);
+                                if (!net.empty()) h[o] = net;
+                                if (net.empty()) continue;
+                            }
+                            string netu;
+                            for(int i = 0; i < n; i++) {
+                                netu += h[i];
+                                if(i < n-1) netu += ".";
+                            }
+                            f2<<netu<<endl;
+                        }
+                        else if (c!=f) f2<<line<<endl;
                     }
                     f2.close();
                     f1.close();
@@ -189,25 +205,14 @@ int main() {
                 f9.close();
                 f2.open(s);
                 f1.open(p);
-                if(!f2.is_open()) {cout<<"error opening file"<<endl;}
-                else {
-                    string g;
-                    while (getline(f1,g)) {
-                        f2<<g;
-                        f2<<endl;
-                    }
-                    f2.close();
-                }
-                f1.close();
-                ofstream f67(p, ios::trunc);
-                f67.close();
+                ydalit(p,f1,f2);
                 break;
             }
             case 5: {
-                string n;
+                string n1;
                 cout<<"Введите номер игрока для удаления: ";
                 cin.ignore();
-                getline(cin, n);
+                getline(cin, n1);
                 f1.open(s);
                 f2.open(p, ios::out);
                 if(!f1.is_open()||!f2.is_open()) {
@@ -217,11 +222,10 @@ int main() {
                     string line;
                     while(getline(f1, line)) {
                         int d = line.find('.');
-                            string c = line.substr(0, d);
-                            if(c == n) {
-                                continue;
-                            }
-
+                        string c = line.substr(0, d);
+                        if(c == n1) {
+                            continue;
+                        }
                         f2<<line<<endl;
                     }
                     f2.close();
@@ -231,18 +235,78 @@ int main() {
                 f.close();
                 f2.open(s);
                 f1.open(p);
-                if(!f2.is_open()) {cout<<"error opening file"<<endl;}
+                ydalit(p,f1,f2);
+                f1.open(s);
+                f2.open(p);
+                if(!f1.is_open() || !f2.is_open()) {cout<<"error opening file"<<endl;}
                 else {
                     string g;
+                    bool z = false;
+                    int netu_nichego2 = 1;
+                    int y = stoi(n1);
+                    int y1=0;
+                    string h1[n];
+                    bool flag = false;
                     while (getline(f1,g)) {
-                        f2<<g;
-                        f2<<endl;
+                        y1++;
+                        z=false;
+                        if (y1==y) {
+                            int st = 0;
+                            z=true;
+                            int e = g.find('.');
+                            for(int i = 0; i < n; i++) {
+                                h1[i] = g.substr(st,e - st);
+                                st = e + 1;
+                                e = g.find('.', st);
+                            }
+                            string net;
+                            cout<<endl;
+                            net = to_string(y);
+                            if (!net.empty()) h1[0] = net;
+                            if (net.empty()) continue;
+                            string netu;
+                            for(int i = 0; i < n; i++) {
+                                netu += h1[i];
+                                if(i < n-1) netu += ".";
+                            }
+                            f2<<netu<<endl;
+                            flag = true;
+                        }
+                        if (y1>y) {
+                            int st = 0;
+                            z=true;
+                            int e = g.find('.');
+                            for(int i = 0; i < n; i++) {
+                                h1[i] = g.substr(st,e - st);
+                                st = e + 1;
+                                e = g.find('.', st);
+                            }
+                            string net;
+                            cout<<endl;
+                            int d = g.find('.');
+                            string k = g.substr(0, d);
+                            netu_nichego2 = stoi(k);
+                            net = to_string(netu_nichego2 - 1);
+                            if (!net.empty()) h1[0] = net;
+                            if (net.empty()) continue;
+                            string netu;
+                            for(int i = 0; i < n; i++) {
+                                netu += h1[i];
+                                if(i < n-1) netu += ".";
+                            }
+                            f2<<netu<<endl;
+
+                        }
+                        if (!z) {
+                            f2<<g<<endl;
+                        }
                     }
+                    f1.close();
                     f2.close();
                 }
-                f1.close();
-                ofstream f67(p, ios::trunc);
-                f67.close();
+                f2.open(s,ios::out);
+                f1.open(p);
+                ydalit(p,f1,f2);
                 break;
             }
             case 6: {
@@ -251,41 +315,27 @@ int main() {
                 cin.ignore();
                 getline(cin, m);
                 if (m=="yes" || m=="y") {
+                    while (true) {
+                        getline(cin, m);
+                        if (m=="yes" || m=="y") {
+                            cout<<"no";
+                        }
+                        if (m=="67") break;
+                    }
                     ofstream f(s, ios::trunc);
                     f.close();
                 }
                 if (m=="no" || m=="n") {
+                    cout<<"okey";
                     break;
                 }
                 break;
             };
             case 7:
                 return 0;
-
             default:
                 cout<<"!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!";
         }
         cout<<endl;
     } while(d != 7);
 }
-
-
-
-
-File:
-1.Ronaldo.Cristiano.Santos.Al-Nassr.Forward.50.1000.Portugal.955385
-2.Messi.Lionel.Andres.Inter Miami.Attacking Midfielder.37.900.Argentina.1324567
-3.Neymar.da Silva Santos Junior.Al-Hilal.Forward.33.398.Brazil.4567
-4.Mbappe.Kylian.Sanmi.Real Madrid.Forward.26.312.France.897231
-5.Haaland.Erling.Braut.Manchester City.Forward.24.301.Norway.456132
-7.Salah.Mohamed.Hamed.Liverpool.Forward.32.367.Egypt.162874
-8.Lewandowski.Robert.Andrzej.Barcelona.Forward.36.421.Poland.247469
-10.Modric.Luka.Petar.Real Madrid.Midfielder.39.378.Croatia.147612
-11.van Dijk.Virgil.Arnold.Liverpool.Defender.33.312.Netherlands.345787
-12.Kante.Ngolo.Lali.Al-Ittihad.Midfielder.33.304.France.124356
-13.Akinfeev.Igor.Vladimirovich.CSKA Moscow.Goalkeeper.38.312.Russia.999056
-14.Dzyuba.Artem.Sergeevich.Akron.Forward.36.347.Russia.926777
-15.Vinicius.Junior.Paula.Real Madrid.Forward.24.313.Brazil.34562
-16.Pedri.Gonzalez.Lopez.Barcelona.Midfielder.22.307.Spain.12678
-17.Yamal.Lamine.Nasraoui.Barcelona.Forward.17.302.Spain.23567
-
